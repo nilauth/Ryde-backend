@@ -34,6 +34,7 @@ public class UsersManagementService {
             // Create a new user object from the registration request
             OurUsers ourUser = new OurUsers();
             // Set user details from the registration request
+            ourUser.setCin(registrationRequest.getCin());
             ourUser.setEmail(registrationRequest.getEmail());
             ourUser.setCity(registrationRequest.getCity());
             ourUser.setRole(registrationRequest.getRole());

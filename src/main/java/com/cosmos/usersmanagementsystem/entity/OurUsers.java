@@ -18,6 +18,9 @@ public class OurUsers implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @Column(unique = true)
+    private String cin;
+    @Column(unique = true)
     private String email;
     private String name;
     private String password;
@@ -53,4 +56,5 @@ public class OurUsers implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
 }
