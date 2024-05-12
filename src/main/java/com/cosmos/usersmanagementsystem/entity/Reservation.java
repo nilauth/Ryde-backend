@@ -18,11 +18,6 @@ public class Reservation {
     @ManyToOne(fetch = FetchType.LAZY)
     private Offres offre;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "reservation_user",
-            joinColumns = @JoinColumn(name = "reservation_id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id")
-    )
-    private List<OurUsers> users;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private OurUsers user;
 }

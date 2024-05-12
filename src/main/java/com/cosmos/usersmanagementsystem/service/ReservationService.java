@@ -6,13 +6,16 @@ import com.cosmos.usersmanagementsystem.dto.ReservationDTO;
 import com.cosmos.usersmanagementsystem.entity.Offres;
 import com.cosmos.usersmanagementsystem.entity.OurUsers;
 import com.cosmos.usersmanagementsystem.entity.Reservation;
+import com.cosmos.usersmanagementsystem.repository.OffresRepository;
 import com.cosmos.usersmanagementsystem.repository.ReservationRepository;
 import com.cosmos.usersmanagementsystem.repository.UsersRepo;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 
 import java.beans.Transient;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -21,18 +24,26 @@ import java.util.stream.Collectors;
 public class ReservationService {
 
     private final ReservationRepository reservationRepository;
+    private final OffresRepository offresRepository;
+    private final UsersRepo usersRepo;
 
-    private Reservation mapToEntity(ReservationDTO reservationDTO) {
+    private Reservation mapToEntityReservation(ReservationDTO reservationDTO) {
         Reservation reservation = new Reservation();
         reservation.setId(reservationDTO.getId());
+
+        if (reservationDTO.getOffreid() != null) {
+            Offres offre = offresRepository.findOffresById(reservationDTO.getOffreid());
+            reservation.setOffre(offre);
+        }
+
+        if (reservationDTO.getUserid() != null) {
+            OurUsers user = usersRepo.findOurUsersById(reservationDTO.getUserid());
+            reservation.setUser(user);
+        }
+
         return reservation;
     }
 
-    private Offres mapToEntity(OffresDTO offresDTO) {
-        Offres offres = new Offres();
-        offres.setId(offresDTO.getId());
-        return offres;
-    }
 
     private ReservationDTO mapToDTO(Reservation reservation) {
         ReservationDTO reservationDTO = new ReservationDTO();
@@ -41,7 +52,7 @@ public class ReservationService {
     }
 
     public Reservation addReservation(ReservationDTO reservationDTO) {
-            Reservation reservation = mapToEntity(reservationDTO);
+            Reservation reservation = mapToEntityReservation(reservationDTO);
             return reservationRepository.save(reservation);
     }
 
@@ -51,8 +62,11 @@ public class ReservationService {
         try{
             if (optionalReservation.isPresent()) {
                 Reservation existingReservation = optionalReservation.get();
-                existingReservation.setOffre(mapToEntity(updatedReservationDTO.getOffre()));
-                existingReservation.setUsers(updatedReservationDTO.getUsers());
+                existingReservation.setOffre(offresRepository
+                        .findOffresById(updatedReservationDTO.getOffreid()));
+                existingReservation.setUser(usersRepo.findOurUsersById(
+                        updatedReservationDTO.getUserid()
+                ));
                 Reservation updatedReservation = reservationRepository.save(existingReservation);
                 reservationDTO = mapToDTO(updatedReservation);
                 reservationDTO.setMessage("Successfully Updated Reservation");

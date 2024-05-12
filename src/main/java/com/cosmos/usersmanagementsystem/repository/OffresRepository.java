@@ -11,4 +11,5 @@ import java.util.List;
 @Repository
 public interface OffresRepository extends JpaRepository<Offres,Integer> {
     List<Offres> findOffresByVilleDepartAndVilleArrivAndDate(Villes villedepart, Villes villearriv, Date date);
+    Offres findOffresById(String id);
 }

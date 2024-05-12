@@ -21,9 +21,7 @@ public class DriverServices {
     private Offres mapToEntity(OffresDTO offreDTO) {
         Offres offre = new Offres();
         offre.setId(offreDTO.getId());
-        // Retrieve the OurUsers entity based on driverId
-        OurUsers driver = usersRepo.findOurUsersById(offreDTO.getDriverId());
-        offre.setDriver(driver);
+        offre.setDriver(usersRepo.findOurUsersById(offreDTO.getDriverId()));
         offre.setVilleDepart(offreDTO.getVilleDepart());
         offre.setVilleArriv(offreDTO.getVilleArriv());
         offre.setHeureDepart(offreDTO.getHeureDepart());

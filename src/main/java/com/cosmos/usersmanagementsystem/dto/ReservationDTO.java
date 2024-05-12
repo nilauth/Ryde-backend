@@ -21,6 +21,6 @@ public class ReservationDTO {
     private String error;
     private String message;
     private Integer id;
-    private OffresDTO offre;
-    private List<OurUsers> users;
+    private String offreid;
+    private Integer userid;
 }
