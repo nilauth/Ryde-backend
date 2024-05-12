@@ -37,7 +37,7 @@ public class ReservationService {
         }
 
         if (reservationDTO.getUserid() != null) {
-            OurUsers user = usersRepo.findOurUsersById(reservationDTO.getUserid());
+           OurUsers user = usersRepo.findOurUsersById(reservationDTO.getUserid());
             reservation.setUser(user);
         }
 
@@ -48,8 +48,15 @@ public class ReservationService {
     private ReservationDTO mapToDTO(Reservation reservation) {
         ReservationDTO reservationDTO = new ReservationDTO();
         reservationDTO.setId(reservation.getId());
+        if (reservation.getOffre() != null) {
+            reservationDTO.setOffreid(String.valueOf(reservation.getOffre().getId()));
+        }
+        if (reservation.getUser() != null) {
+            reservationDTO.setUserid(reservation.getUser().getId());
+        }
         return reservationDTO;
     }
+
 
     public Reservation addReservation(ReservationDTO reservationDTO) {
             Reservation reservation = mapToEntityReservation(reservationDTO);
@@ -64,9 +71,9 @@ public class ReservationService {
                 Reservation existingReservation = optionalReservation.get();
                 existingReservation.setOffre(offresRepository
                         .findOffresById(updatedReservationDTO.getOffreid()));
-                existingReservation.setUser(usersRepo.findOurUsersById(
-                        updatedReservationDTO.getUserid()
-                ));
+                //existingReservation.setUser(usersRepo.findOurUsersById(
+               //         updatedReservationDTO.getUserid()
+                //));
                 Reservation updatedReservation = reservationRepository.save(existingReservation);
                 reservationDTO = mapToDTO(updatedReservation);
                 reservationDTO.setMessage("Successfully Updated Reservation");
@@ -106,7 +113,7 @@ public class ReservationService {
     }
 
     public List<ReservationDTO> getAllReservations(OurUsers user) {
-        List<Reservation> reservationList = reservationRepository.findByUsers(user);
+        List<Reservation> reservationList = reservationRepository.findAllByUser(user);
         return reservationList.stream()
                 .map(this::mapToDTO)
                 .collect(Collectors.toList());

@@ -9,5 +9,5 @@ import java.util.List;
 
 @Repository
 public interface ReservationRepository extends JpaRepository<Reservation,Integer> {
-    List<Reservation> findByUsers(OurUsers users);
+    List<Reservation> findAllByUser(OurUsers users);
 }

@@ -37,8 +37,20 @@ public class DriverServices {
     private OffresDTO mapToDTO(Offres offres) {
         OffresDTO offresDTO = new OffresDTO();
         offresDTO.setId(offres.getId());
+        offresDTO.setDriverId(offres.getDriver().getId());
+        offresDTO.setVilleDepart(offres.getVilleDepart());
+        offresDTO.setVilleArriv(offres.getVilleArriv());
+        offresDTO.setHeureDepart(offres.getHeureDepart());
+        offresDTO.setHeureArriv(offres.getHeureDarriv());
+        offresDTO.setDate(offres.getDate());
+        offresDTO.setPrix(offres.getPrix());
+        offresDTO.setPlaceDispo(offres.getPlaceDispo());
+        offresDTO.setPlaceInitiale(offres.getPlaceInitiale());
+        offresDTO.setStatus(offres.getStatus());
+        offresDTO.setStatusCode(200);
         return offresDTO;
     }
+
 
     public Offres addOffre(OffresDTO offreDTO) {
             Offres offre = mapToEntity(offreDTO);
