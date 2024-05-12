@@ -12,14 +12,13 @@ import java.util.Date;
 @Builder
 public class Offres {
     @Id
-    private Integer id;
-    @OneToOne(fetch = FetchType.LAZY)
+    private String id;
+    @ManyToOne(fetch = FetchType.LAZY)
     private OurUsers driver;
     private String villeDepart;
     private String villeArriv;
-
-    private Date heureDepart;
-    private Date heureDarriv;
+    private String heureDepart;
+    private String heureDarriv;
     @Temporal(TemporalType.DATE)
     private Date date;
     private Double prix;

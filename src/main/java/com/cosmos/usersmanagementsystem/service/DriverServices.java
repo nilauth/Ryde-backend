@@ -5,6 +5,7 @@ import com.cosmos.usersmanagementsystem.dto.ReqRes;
 import com.cosmos.usersmanagementsystem.entity.Offres;
 import com.cosmos.usersmanagementsystem.entity.OurUsers;
 import com.cosmos.usersmanagementsystem.repository.OffresRepository;
+import com.cosmos.usersmanagementsystem.repository.UsersRepo;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,11 +17,13 @@ import java.util.stream.Collectors;
 @Service
 public class DriverServices {
     private final OffresRepository offresRepository;
-
+    private final UsersRepo usersRepo;
     private Offres mapToEntity(OffresDTO offreDTO) {
         Offres offre = new Offres();
         offre.setId(offreDTO.getId());
-        offre.setDriver(offreDTO.getDriver());
+        // Retrieve the OurUsers entity based on driverId
+        OurUsers driver = usersRepo.findOurUsersById(offreDTO.getDriverId());
+        offre.setDriver(driver);
         offre.setVilleDepart(offreDTO.getVilleDepart());
         offre.setVilleArriv(offreDTO.getVilleArriv());
         offre.setHeureDepart(offreDTO.getHeureDepart());
@@ -32,7 +35,6 @@ public class DriverServices {
         offre.setStatus(offreDTO.getStatus());
         return offre;
     }
-
 
     private OffresDTO mapToDTO(Offres offres) {
         OffresDTO offresDTO = new OffresDTO();
