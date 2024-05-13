@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class UserServices {
     private final OffresRepository offresRepository;
-    public List<OffresDTO> getOffreFiltered(Villes villeDep, Villes villeArrvi, Date date){
+    public List<OffresDTO> getOffreFiltered(String  villeDep,String villeArrvi, Date date){
         List<Offres> offres= offresRepository
                 .findOffresByVilleDepartAndVilleArrivAndDate(villeDep,villeArrvi,date);
         return offres.stream()

@@ -67,11 +67,13 @@ public class UserController {
         List<OffresDTO> offresList = driverServices.getAllOffres();
         return ResponseEntity.ok(offresList);
     }
-    @GetMapping("/offersFiltre")
-    public ResponseEntity<List<OffresDTO>> getOffresFiltered(@RequestParam Villes villeDep,
-                                                             @RequestParam Villes villeArrv,
+    @PostMapping("/offersFiltre")
+    public ResponseEntity<List<OffresDTO>> getOffresFiltered(@RequestParam String villeDep,
+                                                             @RequestParam String villeArrv,
                                                              @RequestParam Date date
     ) {
+
+        System.out.println();
         List<OffresDTO> offresList = userServices.getOffreFiltered(villeDep,villeArrv,date);
         return ResponseEntity.ok(offresList);
     }
