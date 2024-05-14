@@ -68,13 +68,12 @@ public class UserController {
         return ResponseEntity.ok(offresList);
     }
     @PostMapping("/offersFiltre")
-    public ResponseEntity<List<OffresDTO>> getOffresFiltered(@RequestParam String villeDep,
-                                                             @RequestParam String villeArrv,
-                                                             @RequestParam Date date
+    public ResponseEntity<List<OffresDTO>> getOffresFiltered(@RequestBody OffresDTO offresDTO
     ) {
 
         System.out.println();
-        List<OffresDTO> offresList = userServices.getOffreFiltered(villeDep,villeArrv,date);
+        List<OffresDTO> offresList = userServices.getOffreFiltered(offresDTO.getVilleDepart(), offresDTO.getVilleArriv(), offresDTO.getDate());
+
         return ResponseEntity.ok(offresList);
     }
 }

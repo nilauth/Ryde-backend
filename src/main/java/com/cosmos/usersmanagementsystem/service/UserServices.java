@@ -17,6 +17,10 @@ public class UserServices {
     public List<OffresDTO> getOffreFiltered(String  villeDep,String villeArrvi, Date date){
         List<Offres> offres= offresRepository
                 .findOffresByVilleDepartAndVilleArrivAndDate(villeDep,villeArrvi,date);
+        for (int i = 0; i < offres.size(); i++) {
+            Offres offre = offres.get(i);
+            System.out.println("OffresDTO at index " + i + ": " + offre);
+        }
         return offres.stream()
                 .map(this::mapToDTO)
                 .collect(Collectors.toList());
