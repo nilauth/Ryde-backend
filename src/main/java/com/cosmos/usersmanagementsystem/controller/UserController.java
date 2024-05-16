@@ -35,7 +35,7 @@ public class UserController {
         }
         return (UserDetails) authentication.getPrincipal();
     }
-    @PostMapping("/add")
+    @PostMapping("/add-reservation")
     public ResponseEntity<String> addReservation(@RequestBody ReservationDTO reservationDTO) {
         try {
             Reservation addedReservation = reservationService.addReservation(reservationDTO);

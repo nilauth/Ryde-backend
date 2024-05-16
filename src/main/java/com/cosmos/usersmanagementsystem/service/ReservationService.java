@@ -30,7 +30,9 @@ public class ReservationService {
     private Reservation mapToEntityReservation(ReservationDTO reservationDTO) {
         Reservation reservation = new Reservation();
         reservation.setId(reservationDTO.getId());
-
+        System.out.println(reservationDTO.getId());
+        System.out.println(reservationDTO.getOffreid());
+        System.out.println(reservationDTO.getUserid());
         if (reservationDTO.getOffreid() != null) {
             Offres offre = offresRepository.findOffresById(reservationDTO.getOffreid());
             reservation.setOffre(offre);
