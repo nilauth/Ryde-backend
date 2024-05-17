@@ -59,10 +59,31 @@ public class ReservationService {
         return reservationDTO;
     }
 
-
-    public Reservation addReservation(ReservationDTO reservationDTO) {
+    public ReservationDTO addReservation(ReservationDTO reservationDTO) {
             Reservation reservation = mapToEntityReservation(reservationDTO);
-            return reservationRepository.save(reservation);
+            try {
+                OurUsers ourUsers = reservation.getUser();
+                double solde = ourUsers.getSolde();
+
+                Offres offres = reservation.getOffre();
+                double prixOffre = offres.getPrix();
+
+                if(solde > prixOffre){
+                    reservationDTO.setStatusCode(500);
+                    reservationDTO.setMessage("Successfully Added Reservation");
+                    ourUsers.setSolde(solde-prixOffre);
+                    usersRepo.save(ourUsers);
+                    reservationRepository.save(reservation);
+                }
+                else {
+                    reservationDTO.setStatusCode(404);
+                    reservationDTO.setMessage("Reservation not Added");
+                }
+            }catch (Exception e){
+                reservationDTO.setStatusCode(500);
+                reservationDTO.setMessage(e.getMessage());
+            }
+            return reservationDTO;
     }
 
     public ReservationDTO updateReservation(Integer reservationId, ReservationDTO updatedReservationDTO) {
@@ -116,6 +137,12 @@ public class ReservationService {
 
     public List<ReservationDTO> getAllReservations(OurUsers user) {
         List<Reservation> reservationList = reservationRepository.findAllByUser(user);
+        return reservationList.stream()
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
+    }
+    public List<ReservationDTO> getAllReservationsAdmin() {
+        List<Reservation> reservationList = reservationRepository.findAll();
         return reservationList.stream()
                 .map(this::mapToDTO)
                 .collect(Collectors.toList());

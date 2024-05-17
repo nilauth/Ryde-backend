@@ -38,7 +38,7 @@ public class UserController {
     @PostMapping("/add-reservation")
     public ResponseEntity<String> addReservation(@RequestBody ReservationDTO reservationDTO) {
         try {
-            Reservation addedReservation = reservationService.addReservation(reservationDTO);
+            ReservationDTO addedReservation = reservationService.addReservation(reservationDTO);
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body("Reservation added successfully with ID: " + addedReservation.getId());
         } catch (Exception e) {
@@ -57,23 +57,31 @@ public class UserController {
             return ResponseEntity.notFound().build();
         }
     }
-    @GetMapping("/reservation")
-    public ResponseEntity<List<ReservationDTO>> getAllReservations(@RequestBody OurUsers users) {
+
+    @GetMapping("/getAll-reservation-client")
+    public ResponseEntity<List<ReservationDTO>> getAllReservationsClient(@RequestBody OurUsers users) {
         List<ReservationDTO> reservations = reservationService.getAllReservations(users);
         return ResponseEntity.ok(reservations);
     }
+
+    @GetMapping("/getAll-reservation")
+    public ResponseEntity<List<ReservationDTO>> getAllReservations() {
+        List<ReservationDTO> reservations = reservationService.getAllReservationsAdmin();
+        return ResponseEntity.ok(reservations);
+    }
+
     @GetMapping("/offers")
     public ResponseEntity<List<OffresDTO>> getAllOffres() {
         List<OffresDTO> offresList = driverServices.getAllOffres();
         return ResponseEntity.ok(offresList);
     }
+
     @PostMapping("/offersFiltre")
     public ResponseEntity<List<OffresDTO>> getOffresFiltered(@RequestBody OffresDTO offresDTO
-    ) {
-
+    )
+    {
         System.out.println();
         List<OffresDTO> offresList = userServices.getOffreFiltered(offresDTO.getVilleDepart(), offresDTO.getVilleArriv(), offresDTO.getDate());
-
         return ResponseEntity.ok(offresList);
     }
 }

@@ -26,6 +26,7 @@ public class OurUsers implements UserDetails {
     private String password;
     private String city;
     private String role;
+    private double solde;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
