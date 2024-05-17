@@ -39,6 +39,7 @@ public class UsersManagementService {
             ourUser.setCity(registrationRequest.getCity());
             ourUser.setRole(registrationRequest.getRole());
             ourUser.setName(registrationRequest.getName());
+            ourUser.setSolde(registrationRequest.getSolde());
             // Encrypt the user's password before storing it
             ourUser.setPassword(passwordEncoder.encode(registrationRequest.getPassword()));
 

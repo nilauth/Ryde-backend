@@ -24,6 +24,7 @@ public class ReqRes {
     private String role;
     private String email;
     private String password;
+    private double solde;
     private OurUsers ourUsers;
     private List<OurUsers> ourUsersList;
 
