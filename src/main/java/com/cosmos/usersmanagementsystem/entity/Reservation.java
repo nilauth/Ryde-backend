@@ -20,4 +20,8 @@ public class Reservation {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private OurUsers user;
+
+    private Boolean status;
+
+
 }

@@ -13,6 +13,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.beans.Transient;
 import java.util.ArrayList;
@@ -68,10 +69,11 @@ public class ReservationService {
                 Offres offres = reservation.getOffre();
                 double prixOffre = offres.getPrix();
 
-                if(solde > prixOffre){
-                    reservationDTO.setStatusCode(500);
+                if(solde > prixOffre && offres.getPlaceDispo() < offres.getPlaceInitiale() && !offres.getStatusOffres() && !offres.getStatusVoyages()){
+                    reservationDTO.setStatusCode(200);
                     reservationDTO.setMessage("Successfully Added Reservation");
                     ourUsers.setSolde(solde-prixOffre);
+                    offres.setPlaceDispo(offres.getPlaceDispo()+1);
                     usersRepo.save(ourUsers);
                     reservationRepository.save(reservation);
                 }
@@ -147,5 +149,15 @@ public class ReservationService {
                 .map(this::mapToDTO)
                 .collect(Collectors.toList());
     }
+
+//    public ReservationDTO CloseStatus(ReservationDTO reservationDTO){
+//        Reservation reservation = reservationRepository.getReferenceById(reservationDTO.getId());
+//        try {
+//
+//        }catch (Exception e){
+//
+//        }
+//
+//    }
 }
 

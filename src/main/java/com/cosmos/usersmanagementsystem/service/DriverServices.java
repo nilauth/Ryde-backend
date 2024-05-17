@@ -2,9 +2,12 @@ package com.cosmos.usersmanagementsystem.service;
 
 import com.cosmos.usersmanagementsystem.dto.OffresDTO;
 import com.cosmos.usersmanagementsystem.dto.ReqRes;
+import com.cosmos.usersmanagementsystem.dto.ReservationDTO;
 import com.cosmos.usersmanagementsystem.entity.Offres;
 import com.cosmos.usersmanagementsystem.entity.OurUsers;
+import com.cosmos.usersmanagementsystem.entity.Reservation;
 import com.cosmos.usersmanagementsystem.repository.OffresRepository;
+import com.cosmos.usersmanagementsystem.repository.ReservationRepository;
 import com.cosmos.usersmanagementsystem.repository.UsersRepo;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,6 +21,9 @@ import java.util.stream.Collectors;
 public class DriverServices {
     private final OffresRepository offresRepository;
     private final UsersRepo usersRepo;
+    private final ReservationRepository reservationRepository;
+
+
     private Offres mapToEntity(OffresDTO offreDTO) {
         Offres offre = new Offres();
         offre.setId(offreDTO.getId());
@@ -30,7 +36,8 @@ public class DriverServices {
         offre.setPrix(offreDTO.getPrix());
         offre.setPlaceDispo(offreDTO.getPlaceDispo());
         offre.setPlaceInitiale(offreDTO.getPlaceInitiale());
-        offre.setStatus(offreDTO.getStatus());
+        offre.setStatusOffres(offreDTO.getStatusOffres());
+        offre.setStatusVoyages(offreDTO.getStatusVoyages());
         return offre;
     }
 
@@ -46,7 +53,8 @@ public class DriverServices {
         offresDTO.setPrix(offres.getPrix());
         offresDTO.setPlaceDispo(offres.getPlaceDispo());
         offresDTO.setPlaceInitiale(offres.getPlaceInitiale());
-        offresDTO.setStatus(offres.getStatus());
+        offresDTO.setStatusOffres(offres.getStatusOffres());
+        offresDTO.setStatusVoyages(offres.getStatusVoyages());
         offresDTO.setStatusCode(200);
         return offresDTO;
     }
@@ -54,6 +62,8 @@ public class DriverServices {
 
     public Offres addOffre(OffresDTO offreDTO) {
             Offres offre = mapToEntity(offreDTO);
+            offre.setStatusOffres(true);
+            offre.setStatusVoyages(true);
             return offresRepository.save(offre);
     }
 
@@ -70,7 +80,8 @@ public class DriverServices {
                 existantOffre.setPrix(offres.getPrix());
                 existantOffre.setPlaceDispo(offres.getPlaceDispo());
                 existantOffre.setPlaceInitiale(offres.getPlaceInitiale());
-                existantOffre.setStatus(offres.getStatus());
+                existantOffre.setStatusOffres(offres.getStatusOffres());
+                existantOffre.setStatusVoyages(offres.getStatusVoyages());
                 Offres savedOffre = offresRepository.save(existantOffre);
                 offresDTO = mapToDTO(savedOffre);
                 offresDTO.setStatusCode(200);
@@ -109,6 +120,36 @@ public class DriverServices {
                 .map(this::mapToDTO)
                 .collect(Collectors.toList());
 
+    }
+
+    public OffresDTO CloseOffre(OffresDTO offresDTO){
+        Offres offres = offresRepository.findOffresById(offresDTO.getId());
+        try {
+            offres.setStatusOffres(false);
+            offresRepository.save(offres);
+            offresDTO.setMessage("Successfully Updated Offer status");
+            offresDTO.setStatusCode(200);
+        }catch (Exception e) {
+            offresDTO.setMessage("Error to Update Offer status" + e.getMessage());
+            offresDTO.setStatusCode(500);
+        }
+        return offresDTO;
+    }
+
+    public OffresDTO CloseVoyage(OffresDTO offresDTO){
+        Offres offres = offresRepository.findOffresById(offresDTO.getId());
+        Reservation reservation = reservationRepository.findByOffre(offres);
+        try {
+            offres.setStatusVoyages(false);
+            reservation.setStatus(offres.getStatusVoyages());
+            offresRepository.save(offres);
+            offresDTO.setMessage("Successfully Updated Offer voyage");
+            offresDTO.setStatusCode(200);
+        }catch (Exception e) {
+            offresDTO.setMessage("Error to Update Offer voyage" + e.getMessage());
+            offresDTO.setStatusCode(500);
+        }
+        return offresDTO;
     }
 }
 

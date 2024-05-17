@@ -37,13 +37,14 @@ public class UserController {
     }
     @PostMapping("/add-reservation")
     public ResponseEntity<String> addReservation(@RequestBody ReservationDTO reservationDTO) {
+        ReservationDTO addedReservation = null;
         try {
-            ReservationDTO addedReservation = reservationService.addReservation(reservationDTO);
+            addedReservation = reservationService.addReservation(reservationDTO);
             return ResponseEntity.status(HttpStatus.CREATED)
-                    .body("Reservation added successfully with ID: " + addedReservation.getId());
+                    .body(addedReservation.getMessage());
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Failed to add reservation: " + e.getMessage());
+                    .body(addedReservation.getMessage()+" "+e.getMessage());
         }
     }
 

@@ -56,5 +56,24 @@ public class DriverController {
         List<OffresDTO> offresList = driverServices.getAllOffres();
         return ResponseEntity.ok(offresList);
     }
+
+    @GetMapping("/closeOffer")
+    public ResponseEntity<String> closeoffer(@RequestBody OffresDTO offresDTO){
+        OffresDTO closeed = driverServices.CloseOffre(offresDTO);
+        if (closeed != null) {
+            return ResponseEntity.ok(offresDTO.getMessage());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+    @GetMapping("/closeVoyage")
+    public ResponseEntity<String> closevoyage(@RequestBody OffresDTO offresDTO){
+        OffresDTO closeed = driverServices.CloseVoyage(offresDTO);
+        if (closeed != null) {
+            return ResponseEntity.ok(offresDTO.getMessage());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }
 

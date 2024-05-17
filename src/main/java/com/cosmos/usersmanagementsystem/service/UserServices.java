@@ -37,7 +37,8 @@ public class UserServices {
         offresDTO.setPrix(offres.getPrix());
         offresDTO.setPlaceDispo(offres.getPlaceDispo());
         offresDTO.setPlaceInitiale(offres.getPlaceInitiale());
-        offresDTO.setStatus(offres.getStatus());
+        offresDTO.setStatusOffres(offres.getStatusOffres());
+        offresDTO.setStatusVoyages(offres.getStatusVoyages());
         offresDTO.setStatusCode(200);
         return offresDTO;
     }

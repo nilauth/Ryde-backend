@@ -36,5 +36,6 @@ public class OffresDTO {
     private Double prix;
     private int placeDispo;
     private int placeInitiale;
-    private Boolean status;
+    private Boolean statusOffres;
+    private Boolean statusVoyages;
 }
