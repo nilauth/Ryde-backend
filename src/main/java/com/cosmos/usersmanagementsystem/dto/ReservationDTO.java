@@ -23,4 +23,5 @@ public class ReservationDTO {
     private Integer id;
     private String offreid;
     private Integer userid;
+    private Boolean status;
 }

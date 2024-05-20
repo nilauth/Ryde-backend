@@ -31,9 +31,6 @@ public class ReservationService {
     private Reservation mapToEntityReservation(ReservationDTO reservationDTO) {
         Reservation reservation = new Reservation();
         reservation.setId(reservationDTO.getId());
-        System.out.println(reservationDTO.getId());
-        System.out.println(reservationDTO.getOffreid());
-        System.out.println(reservationDTO.getUserid());
         if (reservationDTO.getOffreid() != null) {
             Offres offre = offresRepository.findOffresById(reservationDTO.getOffreid());
             reservation.setOffre(offre);
@@ -43,6 +40,7 @@ public class ReservationService {
            OurUsers user = usersRepo.findOurUsersById(reservationDTO.getUserid());
             reservation.setUser(user);
         }
+        reservation.setStatus(reservationDTO.getStatus());
 
         return reservation;
     }
@@ -69,11 +67,12 @@ public class ReservationService {
                 Offres offres = reservation.getOffre();
                 double prixOffre = offres.getPrix();
 
-                if(solde > prixOffre && offres.getPlaceDispo() < offres.getPlaceInitiale() && !offres.getStatusOffres() && !offres.getStatusVoyages()){
+                if(solde > prixOffre ){
                     reservationDTO.setStatusCode(200);
                     reservationDTO.setMessage("Successfully Added Reservation");
                     ourUsers.setSolde(solde-prixOffre);
                     offres.setPlaceDispo(offres.getPlaceDispo()+1);
+                    reservation.setStatus(offres.getStatusOffres());
                     usersRepo.save(ourUsers);
                     reservationRepository.save(reservation);
                 }
