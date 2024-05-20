@@ -59,10 +59,10 @@ public class UserController {
         }
     }
 
-        @GetMapping("/getAll-reservation-client/{userId}")
-    public ResponseEntity<List<ReservationDTO>> getAllReservationsClient(@PathVariable Integer userId) {
-        List<ReservationDTO> reservations = reservationService.getAllReservations(userId);
-            System.out.println(reservations);
+    @GetMapping("/getAll-reservation-client/{userId}")
+    public ResponseEntity<List<OffresDTO>> getAllReservationsClient(@PathVariable Integer userId) {
+        List<OffresDTO> reservations = reservationService.getAllReservations(userId);
+        System.out.println(reservations);
         return ResponseEntity.ok(reservations);
     }
 

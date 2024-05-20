@@ -180,11 +180,21 @@ public class ReservationService {
         return false;
     }
 
-    public List<ReservationDTO> getAllReservations(Integer userId) {
+    public List<OffresDTO> getAllReservations(Integer userId) {
         OurUsers user= usersRepo.findOurUsersById(userId);
         List<Reservation> reservationList = reservationRepository.findAllByUser(user);
-        return reservationList.stream()
-                .map(this::mapToDTO)
+        List<Offres> offres=new ArrayList<>();
+        for (int i = 0; i <reservationList.size() ; i++) {
+            System.out.println(reservationList.get(i).getOffre());
+            String idOffre= reservationList.get(i).getOffre().getId();
+            Offres offre= offresRepository.findOffresById(idOffre);
+            offres.add(offre);
+
+        }
+
+
+        return offres.stream()
+                .map(this::mapToDToOffres)
                 .collect(Collectors.toList());
     }
     public List<ReservationDTO> getAllReservationsAdmin() {
@@ -203,5 +213,24 @@ public class ReservationService {
 //        }
 //
 //    }
+
+
+    private OffresDTO mapToDToOffres(Offres offres) {
+        OffresDTO offresDTO = new OffresDTO();
+        offresDTO.setId(offres.getId());
+        offresDTO.setDriverId(offres.getDriver().getId());
+        offresDTO.setVilleDepart(offres.getVilleDepart());
+        offresDTO.setVilleArriv(offres.getVilleArriv());
+        offresDTO.setHeureDepart(offres.getHeureDepart());
+        offresDTO.setHeureArriv(offres.getHeureDarriv());
+        offresDTO.setDate(offres.getDate());
+        offresDTO.setPrix(offres.getPrix());
+        offresDTO.setPlaceDispo(offres.getPlaceDispo());
+        offresDTO.setPlaceInitiale(offres.getPlaceInitiale());
+        offresDTO.setStatusOffres(offres.getStatusOffres());
+        offresDTO.setStatusVoyages(offres.getStatusVoyages());
+        offresDTO.setStatusCode(200);
+        return offresDTO;
+    }
 }
 
