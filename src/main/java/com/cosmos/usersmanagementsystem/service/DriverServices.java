@@ -127,10 +127,10 @@ public class DriverServices {
         try {
             offres.setStatusOffres(false);
             offresRepository.save(offres);
-            offresDTO.setMessage("Successfully Updated Offer status");
+            offresDTO.setMessage("Successfully Closed Offer status");
             offresDTO.setStatusCode(200);
         }catch (Exception e) {
-            offresDTO.setMessage("Error to Update Offer status" + e.getMessage());
+            offresDTO.setMessage("Error to Closed Offer status" + e.getMessage());
             offresDTO.setStatusCode(500);
         }
         return offresDTO;
@@ -143,10 +143,10 @@ public class DriverServices {
             offres.setStatusVoyages(false);
             reservation.setStatus(offres.getStatusVoyages());
             offresRepository.save(offres);
-            offresDTO.setMessage("Successfully Updated Offer voyage");
+            offresDTO.setMessage("Successfully Closed Offer voyage");
             offresDTO.setStatusCode(200);
         }catch (Exception e) {
-            offresDTO.setMessage("Error to Update Offer voyage" + e.getMessage());
+            offresDTO.setMessage("Error to Closed Offer voyage" + e.getMessage());
             offresDTO.setStatusCode(500);
         }
         return offresDTO;
