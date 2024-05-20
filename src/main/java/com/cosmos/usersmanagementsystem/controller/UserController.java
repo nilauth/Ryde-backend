@@ -60,8 +60,8 @@ public class UserController {
     }
 
     @GetMapping("/getAll-reservation-client")
-    public ResponseEntity<List<ReservationDTO>> getAllReservationsClient(@RequestBody OurUsers users) {
-        List<ReservationDTO> reservations = reservationService.getAllReservations(users);
+    public ResponseEntity<List<ReservationDTO>> getAllReservationsClient(@RequestBody ReqRes users) {
+        List<ReservationDTO> reservations = reservationService.getAllReservations(users.getId());
         return ResponseEntity.ok(reservations);
     }
 
