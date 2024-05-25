@@ -82,9 +82,17 @@ public class UserController {
     public ResponseEntity<List<OffresDTO>> getOffresFiltered(@RequestBody OffresDTO offresDTO
     )
     {
-        System.out.println();
         List<OffresDTO> offresList = userServices.getOffreFiltered(offresDTO.getVilleDepart(), offresDTO.getVilleArriv(), offresDTO.getDate());
         return ResponseEntity.ok(offresList);
+    }
+    @DeleteMapping("/delete-reservation/{reservationId}")
+    public ResponseEntity<String> deleteResevation(@PathVariable Integer reservationId){
+        ReservationDTO deletedResevation = reservationService.deleteReservation(reservationId);
+        if(deletedResevation != null){
+            return ResponseEntity.ok(deletedResevation.getMessage());
+        }else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
 

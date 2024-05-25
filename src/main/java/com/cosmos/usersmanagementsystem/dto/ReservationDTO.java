@@ -24,4 +24,6 @@ public class ReservationDTO {
     private String offreid;
     private Integer userid;
     private Boolean status;
+    private int placeReserv;
+    private double prix;
 }

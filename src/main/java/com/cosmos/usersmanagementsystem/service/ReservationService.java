@@ -57,36 +57,6 @@ public class ReservationService {
         }
         return reservationDTO;
     }
-
-/*    public ReservationDTO addReservation(ReservationDTO reservationDTO) {
-            Reservation reservation = mapToEntityReservation(reservationDTO);
-            try {
-                OurUsers ourUsers = reservation.getUser();
-                double solde = ourUsers.getSolde();
-
-                Offres offres = reservation.getOffre();
-                double prixOffre = offres.getPrix();
-                //if(solde > prixOffre && offres.getPlaceDispo() < offres.getPlaceInitiale() && !offres.getStatusOffres() && !offres.getStatusVoyages()){
-                if(solde > prixOffre && offres.getPlaceDispo() < offres.getPlaceInitiale() && !offres.getStatusOffres() && !offres.getStatusVoyages()){
-                    reservationDTO.setStatusCode(200);
-                    reservationDTO.setMessage("Successfully Added Reservation");
-                    ourUsers.setSolde(solde-prixOffre);
-                    offres.setPlaceDispo(offres.getPlaceDispo()+1);
-                    reservation.setStatus(offres.getStatusOffres());
-                    usersRepo.save(ourUsers);
-                    reservationRepository.save(reservation);
-                }
-                else {
-                    reservationDTO.setStatusCode(404);
-                    reservationDTO.setMessage("Reservation not Added ");
-                }
-            }catch (Exception e){
-                reservationDTO.setStatusCode(500);
-                reservationDTO.setMessage(e.getMessage());
-            }
-            return reservationDTO;
-    }*/
-
     public ReservationDTO addReservation(ReservationDTO reservationDTO) {
         Reservation reservation = mapToEntityReservation(reservationDTO);
         try {
@@ -102,9 +72,9 @@ public class ReservationService {
                         if (offres.getStatusVoyages()) {
                             reservationDTO.setStatusCode(200);
                             reservationDTO.setMessage("Successfully Added Reservation");
-                            ourUsers.setSolde(solde - prixOffre);
-                            offres.setPlaceDispo(offres.getPlaceDispo() - 1);
-                            reservation.setStatus(offres.getStatusOffres());
+                            ourUsers.setSolde(solde - reservationDTO.getPrix());
+                            offres.setPlaceDispo(offres.getPlaceDispo() - reservationDTO.getPlaceReserv());
+                            reservation.setStatus(offres.getStatusVoyages());
                             usersRepo.save(ourUsers);
                             reservationRepository.save(reservation);
                         } else {
@@ -116,7 +86,6 @@ public class ReservationService {
                         reservationDTO.setMessage("Reservation not Added: Offer status is not active");
                     }
                 } else {
-
                     offres.setStatusOffres(false);
                     offresRepository.save(offres);
                     reservationDTO.setStatusCode(404);
@@ -162,14 +131,13 @@ public class ReservationService {
         return reservationDTO;
     }
 
-    public boolean deleteReservation(Integer reservationId) {
+    public ReservationDTO deleteReservation(Integer reservationId) {
         ReservationDTO reservationDTO = new ReservationDTO();
         try{
             if (reservationRepository.existsById(reservationId)) {
                 reservationRepository.deleteById(reservationId);
                 reservationDTO.setMessage("Successfully Deleted Reservation");
                 reservationDTO.setStatusCode(200);
-                return true;
             }
             else {
                 reservationDTO.setStatusCode(404);
@@ -180,9 +148,8 @@ public class ReservationService {
             reservationDTO.setStatusCode(500);
             reservationDTO.setMessage(e.getMessage());
         }
-        return false;
+        return reservationDTO;
     }
-
     public List<OffresDTO> getAllReservations(Integer userId) {
         OurUsers user= usersRepo.findOurUsersById(userId);
         List<Reservation> reservationList = reservationRepository.findAllByUser(user);

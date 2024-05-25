@@ -1,6 +1,7 @@
 package com.cosmos.usersmanagementsystem.controller;
 
 import com.cosmos.usersmanagementsystem.dto.ReqRes;
+import com.cosmos.usersmanagementsystem.dto.ReservationDTO;
 import com.cosmos.usersmanagementsystem.entity.OurUsers;
 import com.cosmos.usersmanagementsystem.service.ReservationService;
 import com.cosmos.usersmanagementsystem.service.UsersManagementService;
@@ -61,15 +62,16 @@ public class Admin {
     public ResponseEntity<ReqRes> deleteUSer(@PathVariable Integer userId){
         return ResponseEntity.ok(usersManagementService.deleteUser(userId));
     }
-    @DeleteMapping("/{reservationId}")
-    public ResponseEntity<String> deleteReservation(@PathVariable Integer reservationId) {
-        boolean deleted = reservationService.deleteReservation(reservationId);
-        if (deleted) {
-            return ResponseEntity.ok("Reservation with ID " + reservationId + " deleted successfully");
-        } else {
+    @DeleteMapping("/delete-reservation-admin/{reservationId}")
+    public ResponseEntity<String> deleteResevation(@PathVariable Integer reservationId){
+        ReservationDTO deletedResevation = reservationService.deleteReservation(reservationId);
+        if(deletedResevation != null){
+            return ResponseEntity.ok(deletedResevation.getMessage());
+        }else {
             return ResponseEntity.notFound().build();
         }
     }
+
 
 
 }
