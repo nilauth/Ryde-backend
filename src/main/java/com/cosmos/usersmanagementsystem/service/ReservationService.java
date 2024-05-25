@@ -41,6 +41,7 @@ public class ReservationService {
             reservation.setUser(user);
         }
         reservation.setStatus(reservationDTO.getStatus());
+        reservation.setPlaceReserv(reservationDTO.getPlaceReserv());
 
         return reservation;
     }
@@ -65,7 +66,6 @@ public class ReservationService {
 
             Offres offres = reservation.getOffre();
             double prixOffre = offres.getPrix();
-
             if (solde > prixOffre) {
                 if (offres.getPlaceDispo()>0) {
                     if (offres.getStatusOffres()) {
@@ -74,6 +74,9 @@ public class ReservationService {
                             reservationDTO.setMessage("Successfully Added Reservation");
                             ourUsers.setSolde(solde - reservationDTO.getPrix());
                             offres.setPlaceDispo(offres.getPlaceDispo() - reservationDTO.getPlaceReserv());
+                            if(offres.getPlaceDispo()==0){
+                                offres.setStatusOffres(false);
+                            }
                             reservation.setStatus(offres.getStatusVoyages());
                             usersRepo.save(ourUsers);
                             reservationRepository.save(reservation);
