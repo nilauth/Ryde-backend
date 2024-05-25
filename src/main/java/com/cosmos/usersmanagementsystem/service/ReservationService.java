@@ -116,6 +116,9 @@ public class ReservationService {
                         reservationDTO.setMessage("Reservation not Added: Offer status is not active");
                     }
                 } else {
+
+                    offres.setStatusOffres(false);
+                    offresRepository.save(offres);
                     reservationDTO.setStatusCode(404);
                     reservationDTO.setMessage("Reservation not Added: No available places");
                 }
@@ -233,4 +236,3 @@ public class ReservationService {
         return offresDTO;
     }
 }
-
