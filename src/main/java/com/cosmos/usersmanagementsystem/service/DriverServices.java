@@ -138,21 +138,29 @@ public class DriverServices {
         return offresDTO;
     }
 
-    public OffresDTO CloseVoyage(String offresId){
+    public String CloseVoyage(String offresId){
         Offres offres = offresRepository.findOffresById(offresId);
         Reservation reservation = reservationRepository.findByOffre(offres);
-        OffresDTO offresDTO = null;
+        System.out.println("part2");
         try {
+            System.out.println("part3");
+
             offres.setStatusVoyages(false);
-            reservation.setStatus(offres.getStatusVoyages());
+
+            //reservation.setStatus(false);
             offresRepository.save(offres);
-            offresDTO.setMessage("Successfully Closed Offer voyage");
-            offresDTO.setStatusCode(200);
+            System.out.println("offre: " + offres);
+            reservationRepository.save(reservation);
+            //offresDTO.setMessage("Successfully Closed Offer voyage");
+            //offresDTO.setStatusCode(200);
+            return "uccessfully Closed Offer voyage";
         }catch (Exception e) {
-            offresDTO.setMessage("Error to Closed Offer voyage" + e.getMessage());
-            offresDTO.setStatusCode(500);
+            //offresDTO.setMessage("Error to Closed Offer voyage" + e.getMessage());
+            //offresDTO.setStatusCode(500);
+            return e.getMessage();
         }
-        return offresDTO;
+
+
     }
 
     public List<OffresDTO> getAllOffresDriver(Integer driverId) {
@@ -164,4 +172,3 @@ public class DriverServices {
 
     }
 }
-

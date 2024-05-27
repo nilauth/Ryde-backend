@@ -72,12 +72,9 @@ public class DriverController {
     }
     @GetMapping("/closeVoyage/{offreId}")
     public ResponseEntity<String> closevoyage(@PathVariable String offreId){
-        OffresDTO closeed = driverServices.CloseVoyage(offreId);
-        if (closeed != null) {
-            return ResponseEntity.ok(closeed.getMessage());
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+        System.out.println("part1");
+        driverServices.CloseVoyage(offreId);
+
+        return   ResponseEntity.ok("all good");
     }
 }
-
