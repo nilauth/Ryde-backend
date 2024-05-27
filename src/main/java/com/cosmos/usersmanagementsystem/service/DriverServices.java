@@ -138,9 +138,10 @@ public class DriverServices {
         return offresDTO;
     }
 
-    public OffresDTO CloseVoyage(OffresDTO offresDTO){
-        Offres offres = offresRepository.findOffresById(offresDTO.getId());
+    public OffresDTO CloseVoyage(String offresId){
+        Offres offres = offresRepository.findOffresById(offresId);
         Reservation reservation = reservationRepository.findByOffre(offres);
+        OffresDTO offresDTO = null;
         try {
             offres.setStatusVoyages(false);
             reservation.setStatus(offres.getStatusVoyages());
