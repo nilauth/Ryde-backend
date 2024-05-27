@@ -138,29 +138,27 @@ public class DriverServices {
         return offresDTO;
     }
 
-    public String CloseVoyage(String offresId){
+    public OffresDTO CloseVoyage(String offresId){
         Offres offres = offresRepository.findOffresById(offresId);
         Reservation reservation = reservationRepository.findByOffre(offres);
-        System.out.println("part2");
+        OffresDTO offresDTO = null;
+
         try {
-            System.out.println("part3");
-
-            offres.setStatusVoyages(false);
-
-            //reservation.setStatus(false);
-            offresRepository.save(offres);
-            System.out.println("offre: " + offres);
-            reservationRepository.save(reservation);
-            //offresDTO.setMessage("Successfully Closed Offer voyage");
-            //offresDTO.setStatusCode(200);
-            return "uccessfully Closed Offer voyage";
+            if (!(offres==null)){
+                offres.setStatusVoyages(false);
+                if (!(reservation==null)){
+                    reservation.setStatus(offres.getStatusVoyages());
+                    reservationRepository.save(reservation);
+                }
+                offresRepository.save(offres);
+                offresDTO.setMessage("Successfully Closed Offer voyage");
+                offresDTO.setStatusCode(200);
+            }
         }catch (Exception e) {
-            //offresDTO.setMessage("Error to Closed Offer voyage" + e.getMessage());
-            //offresDTO.setStatusCode(500);
-            return e.getMessage();
+            offresDTO.setMessage("Error to Closed Offer voyage" + e.getMessage());
+            offresDTO.setStatusCode(500);
         }
-
-
+        return offresDTO;
     }
 
     public List<OffresDTO> getAllOffresDriver(Integer driverId) {
@@ -172,3 +170,4 @@ public class DriverServices {
 
     }
 }
+
