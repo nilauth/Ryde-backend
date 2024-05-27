@@ -2,6 +2,7 @@ package com.cosmos.usersmanagementsystem.entity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 @Entity
+@Getter
 public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,6 +22,8 @@ public class Reservation {
     private OurUsers user;
     private int placeReserv;
     private Boolean status;
+    private Double prix;
+
 
 
 }

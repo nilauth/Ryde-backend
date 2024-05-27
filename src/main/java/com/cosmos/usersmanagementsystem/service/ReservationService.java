@@ -43,6 +43,7 @@ public class ReservationService {
         }
         reservation.setStatus(reservationDTO.getStatus());
         reservation.setPlaceReserv(reservationDTO.getPlaceReserv());
+        reservation.setPrix(reservationDTO.getPrix());
 
         return reservation;
     }
@@ -139,6 +140,13 @@ public class ReservationService {
         ReservationDTO reservationDTO = new ReservationDTO();
         try{
             if (reservationRepository.existsById(reservationId)) {
+                Reservation reservation=reservationRepository.findById(reservationId).get();
+                Offres offres =offresRepository.findOffresById(reservation.getOffre().getId());
+                offres.setPlaceDispo(offres.getPlaceDispo()+reservation.getPlaceReserv());
+                OurUsers user= usersRepo.findOurUsersById(reservation.getUser().getId());
+                user.setSolde(user.getSolde()+reservation.getPrix());
+                offresRepository.save(offres);
+                usersRepo.save(user);
                 reservationRepository.deleteById(reservationId);
                 reservationDTO.setMessage("Successfully Deleted Reservation");
                 reservationDTO.setStatusCode(200);
