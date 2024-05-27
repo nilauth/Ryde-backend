@@ -142,12 +142,18 @@ public class DriverServices {
         Offres offres = offresRepository.findOffresById(offresId);
         Reservation reservation = reservationRepository.findByOffre(offres);
         OffresDTO offresDTO = null;
+
         try {
-            offres.setStatusVoyages(false);
-            reservation.setStatus(offres.getStatusVoyages());
-            offresRepository.save(offres);
-            offresDTO.setMessage("Successfully Closed Offer voyage");
-            offresDTO.setStatusCode(200);
+            if (!(offres==null)){
+                offres.setStatusVoyages(false);
+                if (!(reservation==null)){
+                    reservation.setStatus(offres.getStatusVoyages());
+                    reservationRepository.save(reservation);
+                }
+                offresRepository.save(offres);
+                offresDTO.setMessage("Successfully Closed Offer voyage");
+                offresDTO.setStatusCode(200);
+            }
         }catch (Exception e) {
             offresDTO.setMessage("Error to Closed Offer voyage" + e.getMessage());
             offresDTO.setStatusCode(500);
