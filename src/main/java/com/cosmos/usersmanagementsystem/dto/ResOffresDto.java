@@ -1,7 +1,5 @@
 package com.cosmos.usersmanagementsystem.dto;
 
-import com.cosmos.usersmanagementsystem.entity.OurUsers;
-import com.cosmos.usersmanagementsystem.entity.Villes;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.GeneratedValue;
@@ -13,15 +11,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Builder
-public class OffresDTO {
-    private  String id;
+public class ResOffresDto {
+    private String id;
     private int statusCode;
     private String error;
     private String message;
@@ -36,4 +33,5 @@ public class OffresDTO {
     private int placeInitiale;
     private Boolean statusOffres;
     private Boolean statusVoyages;
+    private Integer idReservation;
 }

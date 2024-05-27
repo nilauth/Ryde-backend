@@ -2,6 +2,7 @@ package com.cosmos.usersmanagementsystem.service;
 
 import com.cosmos.usersmanagementsystem.dto.OffresDTO;
 import com.cosmos.usersmanagementsystem.dto.ReqRes;
+import com.cosmos.usersmanagementsystem.dto.ResOffresDto;
 import com.cosmos.usersmanagementsystem.dto.ReservationDTO;
 import com.cosmos.usersmanagementsystem.entity.Offres;
 import com.cosmos.usersmanagementsystem.entity.OurUsers;
@@ -153,23 +154,26 @@ public class ReservationService {
         }
         return reservationDTO;
     }
-    public List<OffresDTO> getAllReservations(Integer userId) {
-        OurUsers user= usersRepo.findOurUsersById(userId);
+    public List<ResOffresDto> getAllReservations(Integer userId) {
+        OurUsers user = usersRepo.findOurUsersById(userId);
         List<Reservation> reservationList = reservationRepository.findAllByUser(user);
-        List<Offres> offres=new ArrayList<>();
-        for (int i = 0; i <reservationList.size() ; i++) {
-            System.out.println(reservationList.get(i).getOffre());
-            String idOffre= reservationList.get(i).getOffre().getId();
-            Offres offre= offresRepository.findOffresById(idOffre);
-            offres.add(offre);
+        List<Offres> offres = new ArrayList<>();
 
+        for (Reservation reservation : reservationList) {
+            System.out.println(reservation.getOffre());
+            String idOffre = reservation.getOffre().getId();
+            Offres offre = offresRepository.findOffresById(idOffre);
+            offres.add(offre);
         }
 
-
-        return offres.stream()
-                .map(this::mapToDToOffres)
+        return reservationList.stream()
+                .map(reservation -> {
+                    Offres offre = offresRepository.findOffresById(reservation.getOffre().getId());
+                    return mapToDToResOffres(offre, reservation);
+                })
                 .collect(Collectors.toList());
     }
+
     public List<ReservationDTO> getAllReservationsAdmin() {
         List<Reservation> reservationList = reservationRepository.findAll();
         return reservationList.stream()
@@ -205,4 +209,26 @@ public class ReservationService {
         offresDTO.setStatusCode(200);
         return offresDTO;
     }
+    public ResOffresDto mapToDToResOffres(Offres offre, Reservation reservation) {
+        if (offre == null || reservation == null) {
+            return null;
+        }
+
+        return ResOffresDto.builder()
+                .id(offre.getId())
+                .driverId(offre.getDriver() != null ? offre.getDriver().getId() : null) // Assuming OurUsers has a getId() method
+                .villeDepart(offre.getVilleDepart())
+                .villeArriv(offre.getVilleArriv())
+                .heureDepart(offre.getHeureDepart())
+                .heureArriv(offre.getHeureDarriv())
+                .date(offre.getDate())
+                .prix(offre.getPrix())
+                .placeDispo(offre.getPlaceDispo())
+                .placeInitiale(offre.getPlaceInitiale())
+                .statusOffres(offre.getStatusOffres())
+                .statusVoyages(offre.getStatusVoyages())
+                .idReservation(reservation.getId())
+                .build();
+    }
+
 }
