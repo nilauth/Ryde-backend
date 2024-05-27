@@ -150,6 +150,7 @@ public class DriverServices {
                     reservation.setStatus(offres.getStatusVoyages());
                     reservationRepository.save(reservation);
                 }
+                offresDTO=mapToDTO(offres);
                 offresRepository.save(offres);
                 offresDTO.setMessage("Successfully Closed Offer voyage");
                 offresDTO.setStatusCode(200);
