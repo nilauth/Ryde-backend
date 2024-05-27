@@ -61,11 +61,11 @@ public class DriverController {
         }
     }
 
-    @GetMapping("/closeOffer")
-    public ResponseEntity<String> closeoffer(@RequestBody OffresDTO offresDTO){
-        OffresDTO closeed = driverServices.CloseOffre(offresDTO);
+    @GetMapping("/closeOffer/{offreId}")
+    public ResponseEntity<String> closeoffer(@PathVariable String offreId){
+        OffresDTO closeed = driverServices.CloseOffre(offreId);
         if (closeed != null) {
-            return ResponseEntity.ok(offresDTO.getMessage());
+            return ResponseEntity.ok(closeed.getMessage());
         } else {
             return ResponseEntity.notFound().build();
         }

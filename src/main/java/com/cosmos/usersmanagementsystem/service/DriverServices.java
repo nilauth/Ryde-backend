@@ -122,11 +122,13 @@ public class DriverServices {
 
     }
 
-    public OffresDTO CloseOffre(OffresDTO offresDTO){
-        Offres offres = offresRepository.findOffresById(offresDTO.getId());
+    public OffresDTO CloseOffre(String offreId){
+        Offres offres = offresRepository.findOffresById(offreId);
+        OffresDTO offresDTO = null;
         try {
             offres.setStatusOffres(false);
             offresRepository.save(offres);
+            offresDTO=mapToDTO(offres);
             offresDTO.setMessage("Successfully Closed Offer status");
             offresDTO.setStatusCode(200);
         }catch (Exception e) {
