@@ -51,10 +51,14 @@ public class DriverController {
             return ResponseEntity.notFound().build();
         }
     }
-    @GetMapping("/offers")
-    public ResponseEntity<List<OffresDTO>> getAllOffres() {
-        List<OffresDTO> offresList = driverServices.getAllOffres();
-        return ResponseEntity.ok(offresList);
+    @GetMapping("/get-offers/{driverId}")
+    public ResponseEntity<List<OffresDTO>> getAllOffres(@PathVariable Integer driverId) {
+        List<OffresDTO> offresList = driverServices.getAllOffresDriver(driverId);
+        if(!(offresList==null)){
+            return ResponseEntity.ok(offresList);
+        }else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @GetMapping("/closeOffer")

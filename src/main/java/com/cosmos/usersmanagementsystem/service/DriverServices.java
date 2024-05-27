@@ -151,5 +151,14 @@ public class DriverServices {
         }
         return offresDTO;
     }
+
+    public List<OffresDTO> getAllOffresDriver(Integer driverId) {
+        OurUsers user=usersRepo.findOurUsersById(driverId);
+        List<Offres>offres =offresRepository.findOffresByDriver(user);
+        return offres.stream()
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
+
+    }
 }
 
