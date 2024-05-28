@@ -151,6 +151,13 @@ public class DriverServices {
                     reservationRepository.save(reservation);
                 }
                 offresDTO=mapToDTO(offres);
+                OurUsers user= offres.getDriver();
+                System.out.println(user);
+                double prix=offres.getPrix();
+                int nbr=offres.getPlaceInitiale()-offres.getPlaceDispo();
+                double rslt=prix*nbr;
+                user.setSolde(user.getSolde()+rslt);
+                usersRepo.save(user);
                 offresRepository.save(offres);
                 offresDTO.setMessage("Successfully Closed Offer voyage");
                 offresDTO.setStatusCode(200);

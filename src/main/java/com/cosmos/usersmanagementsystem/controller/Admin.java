@@ -2,7 +2,9 @@ package com.cosmos.usersmanagementsystem.controller;
 
 import com.cosmos.usersmanagementsystem.dto.ReqRes;
 import com.cosmos.usersmanagementsystem.dto.ReservationDTO;
+import com.cosmos.usersmanagementsystem.dto.TrajetAdminDto;
 import com.cosmos.usersmanagementsystem.entity.OurUsers;
+import com.cosmos.usersmanagementsystem.service.AdminService;
 import com.cosmos.usersmanagementsystem.service.ReservationService;
 import com.cosmos.usersmanagementsystem.service.UsersManagementService;
 import lombok.AllArgsConstructor;
@@ -12,11 +14,14 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @AllArgsConstructor
 public class Admin {
     private UsersManagementService usersManagementService;
     private  ReservationService reservationService;
+    private AdminService adminService;
 
     @PostMapping("/auth/register")
     public ResponseEntity<ReqRes> regeister(@RequestBody ReqRes req){
@@ -71,7 +76,15 @@ public class Admin {
             return ResponseEntity.notFound().build();
         }
     }
+    @GetMapping("/admin/get-all-trajets")
+    public ResponseEntity<String> getAlltrajets(){
+        if (!(adminService.getAllTrajets()==null)){
+            return ResponseEntity.ok("Listes des Trajets");
+        }else {
+            return ResponseEntity.notFound().build();
+        }
 
+    }
 
 
 }
