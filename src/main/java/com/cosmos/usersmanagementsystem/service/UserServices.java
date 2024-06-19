@@ -84,6 +84,7 @@ public class UserServices {
 
         return Solde.builder()
                 .id(soldeDto.getId())
+                .solde(soldeDto.getSolde())
                 .nomClient(soldeDto.getNomClient())
                 .cardNumber(soldeDto.getCardNumber())
                 .dateExpiration(soldeDto.getDateExpiration())
@@ -92,4 +93,3 @@ public class UserServices {
                 .build();
     }
 }
-

@@ -21,4 +21,6 @@ public class Solde {
     private String cvv;
     @ManyToOne(fetch = FetchType.LAZY)
     private OurUsers ourUsers;
+    private Integer solde;
+
 }
