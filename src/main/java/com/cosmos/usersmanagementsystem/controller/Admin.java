@@ -77,9 +77,10 @@ public class Admin {
         }
     }
     @GetMapping("/admin/get-all-trajets")
-    public ResponseEntity<String> getAlltrajets(){
+    public ResponseEntity<List<TrajetAdminDto>> getAlltrajets(){
         if (!(adminService.getAllTrajets()==null)){
-            return ResponseEntity.ok("Listes des Trajets");
+            System.out.println(adminService.getAllTrajets());
+            return ResponseEntity.ok(adminService.getAllTrajets());
         }else {
             return ResponseEntity.notFound().build();
         }

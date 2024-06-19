@@ -17,12 +17,15 @@ public class AdminService {
     private final ReservationRepository reservationRepository;
     public List<TrajetAdminDto> getAllTrajets(){
         List<Reservation> reservations = reservationRepository.findAll();
+        System.out.println("res:" + reservations.size());
         List<TrajetAdminDto> trajets = new ArrayList<>();
         for (Reservation reservation : reservations) {
             Offres offre = reservation.getOffre();
+            System.out.println("offre" + offre.getId());
             TrajetAdminDto trajetAdminDto = mapToDto(reservation, offre);
             trajets.add(trajetAdminDto);
         }
+
         return trajets;
     }
     public TrajetAdminDto mapToDto(Reservation reservation,Offres offres){
