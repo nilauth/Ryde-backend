@@ -104,5 +104,16 @@ public class UserController {
                     .body("Failed to add Solde: " + soldeDto.getMessage());
         }
     }
+    @GetMapping("/request-driver")
+    public ResponseEntity<String> requestDriver(@PathVariable Integer driverId){
+        try {
+            userServices.becomeDriver(driverId);
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body("Driver requested successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Failed to request Driver: " + e.getMessage());
+        }
+    }
 }
 

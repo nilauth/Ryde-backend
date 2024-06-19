@@ -1,10 +1,13 @@
 package com.cosmos.usersmanagementsystem.service;
 
+import com.cosmos.usersmanagementsystem.dto.DemandeDriverDto;
 import com.cosmos.usersmanagementsystem.dto.OffresDTO;
 import com.cosmos.usersmanagementsystem.dto.SoldeDto;
+import com.cosmos.usersmanagementsystem.entity.DemandeDriver;
 import com.cosmos.usersmanagementsystem.entity.Offres;
 import com.cosmos.usersmanagementsystem.entity.OurUsers;
 import com.cosmos.usersmanagementsystem.entity.Solde;
+import com.cosmos.usersmanagementsystem.repository.DemandeRepository;
 import com.cosmos.usersmanagementsystem.repository.OffresRepository;
 import com.cosmos.usersmanagementsystem.repository.SoldeRepository;
 import com.cosmos.usersmanagementsystem.repository.UsersRepo;
@@ -20,6 +23,7 @@ public class UserServices {
     private final OffresRepository offresRepository;
     private final UsersRepo usersRepo;
     private final SoldeRepository soldeRepository;
+    private final DemandeRepository demandeRepository;
     public List<OffresDTO> getOffreFiltered(String  villeDep,String villeArrvi, Date date){
         List<Offres> offres= offresRepository
                 .findOffresByVilleDepartAndVilleArrivAndDate(villeDep,villeArrvi,date);
@@ -91,5 +95,14 @@ public class UserServices {
                 .cvv(soldeDto.getCvv())
                 .ourUsers(ourUsers)
                 .build();
+    }
+
+    public void becomeDriver(Integer driverId) {
+        OurUsers driver = usersRepo.findById(driverId).get();
+        DemandeDriver demandeDriver= DemandeDriver.builder()
+                                .ourUsers(driver)
+                                .status("pending")
+                                .build();
+        demandeRepository.save(demandeDriver);
     }
 }

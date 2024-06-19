@@ -1,5 +1,6 @@
 package com.cosmos.usersmanagementsystem.controller;
 
+import com.cosmos.usersmanagementsystem.dto.DemandeDriverDto;
 import com.cosmos.usersmanagementsystem.dto.ReqRes;
 import com.cosmos.usersmanagementsystem.dto.ReservationDTO;
 import com.cosmos.usersmanagementsystem.dto.TrajetAdminDto;
@@ -9,6 +10,7 @@ import com.cosmos.usersmanagementsystem.service.ReservationService;
 import com.cosmos.usersmanagementsystem.service.UsersManagementService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -79,12 +81,43 @@ public class Admin {
     @GetMapping("/admin/get-all-trajets")
     public ResponseEntity<List<TrajetAdminDto>> getAlltrajets(){
         if (!(adminService.getAllTrajets()==null)){
-            System.out.println(adminService.getAllTrajets());
             return ResponseEntity.ok(adminService.getAllTrajets());
         }else {
             return ResponseEntity.notFound().build();
         }
 
+    }
+    @GetMapping("/admin/get-all-demande")
+    public ResponseEntity<List<DemandeDriverDto>> getAllDemande(){
+        if (!(adminService.getAllDemande()==null)){
+            return ResponseEntity.ok(adminService.getAllDemande());
+        }else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+    @GetMapping("/admin/becomeDriver")
+    public ResponseEntity<String> becomeDriver(@PathVariable Integer demandeId
+    ){
+        try {
+            adminService.becomeDriver(demandeId);
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body("Driver  successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Failed to request Driver: " + e.getMessage());
+        }
+    }
+    @GetMapping("/admin/stayUser")
+    public ResponseEntity<String> stayUser(@PathVariable Integer demandeId
+    ){
+        try {
+            adminService.stayUser(demandeId);
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body("Demande refuser successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Failed to work: " + e.getMessage());
+        }
     }
 
 

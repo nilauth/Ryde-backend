@@ -1,20 +1,27 @@
 package com.cosmos.usersmanagementsystem.service;
 
+import com.cosmos.usersmanagementsystem.dto.DemandeDriverDto;
 import com.cosmos.usersmanagementsystem.dto.TrajetAdminDto;
+import com.cosmos.usersmanagementsystem.entity.DemandeDriver;
 import com.cosmos.usersmanagementsystem.entity.Offres;
+import com.cosmos.usersmanagementsystem.entity.OurUsers;
 import com.cosmos.usersmanagementsystem.entity.Reservation;
-import com.cosmos.usersmanagementsystem.repository.OffresRepository;
+import com.cosmos.usersmanagementsystem.repository.DemandeRepository;
 import com.cosmos.usersmanagementsystem.repository.ReservationRepository;
+import com.cosmos.usersmanagementsystem.repository.UsersRepo;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
 public class AdminService {
     private final ReservationRepository reservationRepository;
+    private final DemandeRepository demandeRepository;
+    private final UsersRepo usersRepo;
     public List<TrajetAdminDto> getAllTrajets(){
         List<Reservation> reservations = reservationRepository.findAll();
         System.out.println("res:" + reservations.size());
@@ -38,4 +45,48 @@ public class AdminService {
         trajetAdminDto.setPrix(offres.getPrix());
         return trajetAdminDto;
     }
+
+    public List<DemandeDriverDto> getAllDemande() {
+        List<DemandeDriver> demandeDrivers= demandeRepository.findAll();
+        return demandeDrivers.stream()
+                .map(this::DemandetoDto)
+                .collect(Collectors.toList());
+
+    }
+    public DemandeDriverDto DemandetoDto(DemandeDriver demandeDriver) {
+        if (demandeDriver == null) {
+            return null;
+        }
+        return DemandeDriverDto.builder()
+                .id(demandeDriver.getId())
+                .driverId(demandeDriver.getOurUsers() != null ? demandeDriver.getOurUsers().getId() : null)
+                .status(demandeDriver.getStatus())
+                .build();
+        }
+    public DemandeDriver DemandetoEntity(DemandeDriverDto demandeDriverDto, OurUsers ourUsers) {
+        if (demandeDriverDto == null) {
+            return null;
+        }
+        return DemandeDriver.builder()
+                .id(demandeDriverDto.getId())
+                .ourUsers(ourUsers)
+                .status(demandeDriverDto.getStatus())
+                .build();
+    }
+
+    public void becomeDriver(Integer demandeId) {
+        DemandeDriver demandeDriver=demandeRepository.findById(demandeId).get();
+        demandeDriver.setStatus("Accepter");
+        demandeRepository.save(demandeDriver);
+        OurUsers driver = demandeDriver.getOurUsers();
+        driver.setRole("DRIVER");
+        usersRepo.save(driver);
+    }
+
+    public void stayUser(Integer demandeId) {
+        DemandeDriver demandeDriver=demandeRepository.findById(demandeId).get();
+        demandeDriver.setStatus("Refuser");
+        demandeRepository.save(demandeDriver);
+    }
 }
+
