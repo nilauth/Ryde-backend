@@ -1,8 +1,6 @@
 package com.cosmos.usersmanagementsystem.controller;
 import com.cosmos.usersmanagementsystem.dto.*;
-import com.cosmos.usersmanagementsystem.entity.OurUsers;
-import com.cosmos.usersmanagementsystem.entity.Reservation;
-import com.cosmos.usersmanagementsystem.entity.Villes;
+import com.cosmos.usersmanagementsystem.entity.*;
 import com.cosmos.usersmanagementsystem.service.DriverServices;
 import com.cosmos.usersmanagementsystem.service.ReservationService;
 import com.cosmos.usersmanagementsystem.service.UserServices;
@@ -92,6 +90,18 @@ public class UserController {
             return ResponseEntity.ok(deletedResevation.getMessage());
         }else {
             return ResponseEntity.notFound().build();
+        }
+    }
+    @PostMapping("/add-solde")
+    public ResponseEntity<String> addSolde(@RequestBody SoldeDto soldeDto){
+        try {
+            System.out.println("Received solde DTO: {}"+ soldeDto);
+            userServices.chargerSolde(soldeDto);
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body("Solde added successfully with ID: " + soldeDto.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Failed to add Solde: " + soldeDto.getMessage());
         }
     }
 }
