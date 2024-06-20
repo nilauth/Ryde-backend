@@ -17,5 +17,6 @@ public class DemandeDriverDto {
     private Integer id;
     private Integer driverId;
     private String status;
+    private String nomDriver;
 
 }

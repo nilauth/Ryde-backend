@@ -95,7 +95,7 @@ public class Admin {
             return ResponseEntity.notFound().build();
         }
     }
-    @GetMapping("/admin/becomeDriver")
+    @GetMapping("/admin/becomeDriver/{demandeId}")
     public ResponseEntity<String> becomeDriver(@PathVariable Integer demandeId
     ){
         try {
@@ -107,7 +107,7 @@ public class Admin {
                     .body("Failed to request Driver: " + e.getMessage());
         }
     }
-    @GetMapping("/admin/stayUser")
+    @GetMapping("/admin/stayUser/{demandeId}")
     public ResponseEntity<String> stayUser(@PathVariable Integer demandeId
     ){
         try {

@@ -54,12 +54,14 @@ public class AdminService {
 
     }
     public DemandeDriverDto DemandetoDto(DemandeDriver demandeDriver) {
+
         if (demandeDriver == null) {
             return null;
         }
         return DemandeDriverDto.builder()
                 .id(demandeDriver.getId())
                 .driverId(demandeDriver.getOurUsers() != null ? demandeDriver.getOurUsers().getId() : null)
+                .nomDriver(demandeDriver.getOurUsers().getName())
                 .status(demandeDriver.getStatus())
                 .build();
         }
@@ -76,7 +78,7 @@ public class AdminService {
 
     public void becomeDriver(Integer demandeId) {
         DemandeDriver demandeDriver=demandeRepository.findById(demandeId).get();
-        demandeDriver.setStatus("Accepter");
+        demandeDriver.setStatus("accepted");
         demandeRepository.save(demandeDriver);
         OurUsers driver = demandeDriver.getOurUsers();
         driver.setRole("DRIVER");
@@ -85,8 +87,7 @@ public class AdminService {
 
     public void stayUser(Integer demandeId) {
         DemandeDriver demandeDriver=demandeRepository.findById(demandeId).get();
-        demandeDriver.setStatus("Refuser");
+        demandeDriver.setStatus("rejected");
         demandeRepository.save(demandeDriver);
     }
 }
-
