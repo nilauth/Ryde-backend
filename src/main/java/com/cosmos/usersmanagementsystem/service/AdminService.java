@@ -10,6 +10,8 @@ import com.cosmos.usersmanagementsystem.repository.DemandeRepository;
 import com.cosmos.usersmanagementsystem.repository.ReservationRepository;
 import com.cosmos.usersmanagementsystem.repository.UsersRepo;
 import lombok.AllArgsConstructor;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -22,6 +24,7 @@ public class AdminService {
     private final ReservationRepository reservationRepository;
     private final DemandeRepository demandeRepository;
     private final UsersRepo usersRepo;
+    private JavaMailSender javaMailSender;
     public List<TrajetAdminDto> getAllTrajets(){
         List<Reservation> reservations = reservationRepository.findAll();
         System.out.println("res:" + reservations.size());
@@ -81,13 +84,31 @@ public class AdminService {
         demandeDriver.setStatus("accepted");
         demandeRepository.save(demandeDriver);
         OurUsers driver = demandeDriver.getOurUsers();
-        driver.setRole("DRIVER");
+        driver.setRole("CONDUCTEUR");
         usersRepo.save(driver);
+        SimpleMailMessage message = new SimpleMailMessage();
+        System.out.println("test2");
+        message.setFrom("younessmeriaf3@gmail.com");
+        message.setTo(driver.getEmail());
+        message.setSubject("Validation de votre demande de devenir conducteur");
+        message.setText("Votre demande de devenir conducteur a été acceptée");
+        System.out.println("test3");
+        javaMailSender.send(message);
+        System.out.println("test4");
+        System.out.println("Mail send successfully...");
     }
 
     public void stayUser(Integer demandeId) {
         DemandeDriver demandeDriver=demandeRepository.findById(demandeId).get();
         demandeDriver.setStatus("rejected");
         demandeRepository.save(demandeDriver);
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("younessmeriaf3@gmail.com");
+        OurUsers driver = demandeDriver.getOurUsers();
+        message.setTo(driver.getEmail());
+        message.setSubject("Validation de votre demande de devenir conducteur");
+        message.setText("Votre demande de devenir conducteur a été refusée");
+        javaMailSender.send(message);
+        System.out.println("Mail send successfully...");
     }
 }

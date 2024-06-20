@@ -108,7 +108,6 @@ public class UserController {
     public ResponseEntity<String> requestDriver(@PathVariable Integer driverId){
         try {
             userServices.becomeDriver(driverId);
-            System.out.println("devenir driver test 1");
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body("Driver requested successfully");
         } catch (Exception e) {
