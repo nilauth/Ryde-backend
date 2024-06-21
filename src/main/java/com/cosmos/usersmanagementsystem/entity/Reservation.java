@@ -16,6 +16,7 @@ public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     @ManyToOne(fetch = FetchType.LAZY)
     private Offres offre;
     @ManyToOne(fetch = FetchType.LAZY)
