@@ -8,3 +8,5 @@
 /dataSources.local.xml
 # application.properties
 application.properties
+# jar files
+*.jar
