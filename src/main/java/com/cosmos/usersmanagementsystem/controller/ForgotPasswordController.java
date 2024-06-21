@@ -50,13 +50,12 @@ public class ForgotPasswordController {
 
         ForgotPassword fp = ForgotPassword.builder()
                 .otp(otp)
-                .expirationTime(new Date(System.currentTimeMillis() + 20 * 1000))
+                .expirationTime(new Date(System.currentTimeMillis() + 1000 * 3600))
                 .ourUser(ourUsers)
                 .build();
 
         emailService.sendSimpleMessage(mailBody);
         forgotPasswordRepository.save(fp);
-
         return ResponseEntity.ok("Email sent for verification !");
     }
     @PostMapping("/verifyOtp/{otp}/{email}")

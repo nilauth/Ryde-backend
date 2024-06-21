@@ -12,6 +12,8 @@ import com.cosmos.usersmanagementsystem.repository.OffresRepository;
 import com.cosmos.usersmanagementsystem.repository.SoldeRepository;
 import com.cosmos.usersmanagementsystem.repository.UsersRepo;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -24,6 +26,9 @@ public class UserServices {
     private final UsersRepo usersRepo;
     private final SoldeRepository soldeRepository;
     private final DemandeRepository demandeRepository;
+    private final PasswordEncoder passwordEncoder;
+
+
     public List<OffresDTO> getOffreFiltered(String  villeDep,String villeArrvi, Date date){
         List<Offres> offres= offresRepository
                 .findOffresByVilleDepartAndVilleArrivAndDate(villeDep,villeArrvi,date);
@@ -81,7 +86,7 @@ public class UserServices {
                 .build();
     }
 
-    public static Solde soldetoEntity(SoldeDto soldeDto, OurUsers ourUsers) {
+    public Solde soldetoEntity(SoldeDto soldeDto, OurUsers ourUsers) {
         if (soldeDto == null) {
             return null;
         }
@@ -90,7 +95,7 @@ public class UserServices {
                 .id(soldeDto.getId())
                 .solde(soldeDto.getSolde())
                 .nomClient(soldeDto.getNomClient())
-                .cardNumber(soldeDto.getCardNumber())
+                .cardNumber(passwordEncoder.encode(soldeDto.getCardNumber()))
                 .dateExpiration(soldeDto.getDateExpiration())
                 .cvv(soldeDto.getCvv())
                 .ourUsers(ourUsers)
