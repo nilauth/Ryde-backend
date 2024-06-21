@@ -20,7 +20,7 @@ public class UsersmanagementsystemApplication {
 		return new BCryptPasswordEncoder();
 	}
 
-	@Bean
+//	@Bean
 	CommandLineRunner commandLineRunner(UsersRepo usersRepo, BCryptPasswordEncoder mainPasswordEncoder) {
 		return args -> {
 			usersRepo.save(OurUsers.builder()

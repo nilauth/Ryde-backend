@@ -34,7 +34,7 @@ public class SecurityConfig {
         httpSecurity.csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/auth/*", "/public/*").permitAll()
+                        .requestMatchers("/auth/*", "/public/*", "/forgotPassword/**").permitAll()
                         .requestMatchers("/admin/**").hasAnyAuthority("ADMIN")
                         .requestMatchers("/user/**").hasAnyAuthority("USER", "ADMIN","CONDUCTEUR")
                         .requestMatchers("/driver/**").hasAnyAuthority("CONDUCTEUR", "ADMIN")

@@ -88,7 +88,7 @@ public class AdminService {
         usersRepo.save(driver);
         SimpleMailMessage message = new SimpleMailMessage();
         System.out.println("test2");
-        message.setFrom("younessmeriaf3@gmail.com");
+        message.setFrom("alyapani9@gmail.com");
         message.setTo(driver.getEmail());
         message.setSubject("Validation de votre demande de devenir conducteur");
         message.setText("Votre demande de devenir conducteur a été acceptée");
@@ -103,7 +103,7 @@ public class AdminService {
         demandeDriver.setStatus("rejected");
         demandeRepository.save(demandeDriver);
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setFrom("younessmeriaf3@gmail.com");
+        message.setFrom("alyapani9@gmail.com"); //younessmeriaf3@gmail.com
         OurUsers driver = demandeDriver.getOurUsers();
         message.setTo(driver.getEmail());
         message.setSubject("Validation de votre demande de devenir conducteur");
